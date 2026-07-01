@@ -77,7 +77,7 @@ st.divider()
 # ── ② 設定 ──
 st.subheader("⚙️ キャラクター・カメラ設定")
 
-col_s1, col_s2 = st.columns(2)
+col_s1, col_s2, col_s3 = st.columns(3)
 with col_s1:
     char_height_cm = st.number_input(
         "キャラクターの身長（cm）",
@@ -91,8 +91,16 @@ with col_s2:
     fov_base = st.slider(
         "視野角 FOV 基本値",
         min_value=10, max_value=60, value=30, step=1,
-        help="30=標準。Distance と自動連動します。",
+        help="30=標準。小さいほど望遠（アップ気味）になります。",
     )
+
+with col_s3:
+    dist_scale = st.slider(
+        "距離調整",
+        min_value=0.5, max_value=2.0, value=1.0, step=0.05,
+        help="1.0=標準。大きいほど遠く（引き）、小さいほど近く（寄り）になります。",
+    )
+    st.caption(f"{'近め ◀' if dist_scale < 1.0 else ('▶ 遠め' if dist_scale > 1.0 else '標準')}")
 
 if bones:
     with st.expander("🔍 フレーム0 状態プレビュー"):
@@ -168,6 +176,14 @@ with btn_col4:
 st.divider()
 
 # ── 生成処理 ──
+def _apply_dist_scale(frames, scale):
+    """全フレームの distance に scale を掛けて遠近を調整する"""
+    if scale == 1.0:
+        return frames
+    for f in frames:
+        f["distance"] = f["distance"] * scale
+    return frames
+
 def _show_result(frames, filename):
     if not frames:
         st.error("フレームが生成されませんでした。")
@@ -198,19 +214,19 @@ def _show_result(frames, filename):
 if gen_speed:
     with st.spinner("スピードモードで生成中..."):
         frames = drift.generate(char_height_mmd, bones, fov_base)
-    _show_result(frames, "camera_speed.vmd")
+    _show_result(_apply_dist_scale(frames, dist_scale), "camera_speed.vmd")
 
 if gen_drift:
     with st.spinner("ドリフトモードで生成中..."):
         frames = driftmode.generate(char_height_mmd, bones, fov_base)
-    _show_result(frames, "camera_drift.vmd")
+    _show_result(_apply_dist_scale(frames, dist_scale), "camera_drift.vmd")
 
 if gen_slow:
     with st.spinner("ゆっくりモードで生成中..."):
         frames = slowmode.generate(char_height_mmd, bones, fov_base)
-    _show_result(frames, "camera_slow.vmd")
+    _show_result(_apply_dist_scale(frames, dist_scale), "camera_slow.vmd")
 
 if gen_anime:
     with st.spinner("アニメモードで生成中..."):
         frames = animemode.generate(char_height_mmd, bones, fov_base)
-    _show_result(frames, "camera_anime.vmd")
+    _show_result(_apply_dist_scale(frames, dist_scale), "camera_anime.vmd")
