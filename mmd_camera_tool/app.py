@@ -1,16 +1,5 @@
 # app.py
 import streamlit as st
-# 埋め込み時の余分な余白やフッターを消すCSS
-hide_streamlit_style = """
-<style>
-/* Streamlitの右上のメニュー非表示 */
-#MainMenu {visibility: hidden;}
-/* フッターを非表示 */
-footer {visibility: hidden;}
-/* ヘッダー部分を非表示 */
-header {visibility: hidden;}
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 from vmd_writer import write_vmd
 from vmd_reader import (read_vmd_bones, get_total_frames,
                          get_safety, get_detected_bones_report)
