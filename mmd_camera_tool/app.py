@@ -1,5 +1,14 @@
 # app.py
 import streamlit as st
+# Streamlitのヘッダーやメニュー、フッターを非表示にするCSS
+hide_st_style = """
+<style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_st_style, unsafe_allow_html=True)
 from vmd_writer import write_vmd
 from vmd_reader import (read_vmd_bones, get_total_frames,
                          get_safety, get_detected_bones_report)
