@@ -9,6 +9,8 @@ hide_streamlit_style = """
 footer {visibility: hidden;}
 /* ヘッダー部分を非表示 */
 header {visibility: hidden;}
+/* 上部の余白を詰める */
+.st-emotion-cache-183lzfq {padding-top: 0rem;}
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
