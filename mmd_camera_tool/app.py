@@ -9,13 +9,6 @@ hide_streamlit_style = """
 footer {visibility: hidden;}
 /* ヘッダー部分を非表示 */
 header {visibility: hidden;}
-/* iframe内のパディングを調整して外枠をスッキリさせる */
-.block-container {
-    padding-top: 0rem;
-    padding-right: 1rem;
-    padding-left: 1rem;
-    padding-bottom: 0rem;
-}
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
